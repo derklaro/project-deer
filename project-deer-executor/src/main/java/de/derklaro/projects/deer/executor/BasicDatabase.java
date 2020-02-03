@@ -84,7 +84,7 @@ public class BasicDatabase<T extends FileWriter> implements Database<T> {
 
     @Override
     public void insert(@NotNull String key, @NotNull String[] values, @NotNull T value) {
-        String databaseFileName = key + "/" + String.join("/", values);
+        String databaseFileName = key + "-" + String.join("-", values);
         File databaseFile = new File(getTargetFolder().getPath(), databaseFileName);
         if (file.exists()) {
             return;
