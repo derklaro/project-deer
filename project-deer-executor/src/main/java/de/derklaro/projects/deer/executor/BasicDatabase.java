@@ -21,6 +21,10 @@ public class BasicDatabase<T extends FileWriter> implements Database<T> {
         this.applier = applier;
         this.expectedValues = values;
 
+        if (values < 1) {
+            throw new RuntimeException("We cannot handle a database which less than 1 values per key. Database config broken?");
+        }
+
         Properties properties = new Properties();
         properties.setProperty("values", Integer.toString(expectedValues));
         try (OutputStream outputStream = Files.newOutputStream(Paths.get(folder.getAbsolutePath(), "config.properties"), StandardOpenOption.CREATE_NEW)) {
