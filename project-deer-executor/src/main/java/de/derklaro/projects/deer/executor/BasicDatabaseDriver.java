@@ -16,7 +16,7 @@ import java.util.function.Function;
 
 public class BasicDatabaseDriver implements DatabaseDriver {
 
-    public static void init() {
+    static {
         DatabaseProvider.setDatabaseDriver(new BasicDatabaseDriver());
     }
 
