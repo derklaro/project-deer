@@ -94,6 +94,10 @@ public class BasicDatabase<T extends FileWriter> implements Database<T> {
             return;
         }
 
+        if (values.length != this.expectedValues) {
+            throw new RuntimeException("Cannot insert database object (expected != given)");
+        }
+
         try {
             if (!databaseFile.createNewFile()) {
                 throw new RuntimeException("Cannot create new database file");
