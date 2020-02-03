@@ -47,8 +47,8 @@ public class BasicDatabase<T extends FileWriter> implements Database<T> {
             throw new RuntimeException("Expected a number but got " + values + ". Database seems broken");
         }
 
-        if (this.expectedValues < 0) {
-            throw new RuntimeException("We cannot handle a database which less than 0 values per key. Database config broken?");
+        if (this.expectedValues < 1) {
+            throw new RuntimeException("We cannot handle a database which less than 1 values per key. Database config broken?");
         }
     }
 
@@ -80,6 +80,29 @@ public class BasicDatabase<T extends FileWriter> implements Database<T> {
     public Optional<T> getEntry(@NotNull Filter filter) {
         File file = getFile(filter);
         return file == null ? Optional.empty() : Optional.ofNullable(getApplier().apply(file));
+    }
+
+    @Override
+    public void insert(@NotNull String key, @NotNull String[] values, @NotNull T value) {
+        String databaseFileName = key + "/" + String.join("/", values);
+        File databaseFile = new File(getTargetFolder().getPath(), databaseFileName);
+        if (file.exists()) {
+            return;
+        }
+
+        try {
+            if (!databaseFile.createNewFile()) {
+                throw new RuntimeException("Cannot create new database file");
+            }
+        } catch (final IOException ex) {
+            ex.printStackTrace();
+        }
+
+        try (java.io.FileWriter fileWriter = new java.io.FileWriter(file, false)) {
+            fileWriter.write(value.toWriteableString());
+        } catch (final IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override

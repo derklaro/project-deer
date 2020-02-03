@@ -21,6 +21,8 @@ public interface Database<T extends FileWriter> {
     @NotNull
     Optional<T> getEntry(@NotNull Filter filter);
 
+    void insert(@NotNull String key, @NotNull String[] values, @NotNull T value);
+
     void updateKey(@NotNull Filter target, @NotNull T value);
 
     void delete(@NotNull Filter filter);
