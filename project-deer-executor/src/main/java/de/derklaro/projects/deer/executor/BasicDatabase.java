@@ -38,7 +38,7 @@ public class BasicDatabase<T extends FileWriter> implements Database<T> {
         this.file = folder;
         this.applier = applier;
 
-        try (InputStream stream = Files.newInputStream(Paths.get(folder.getAbsolutePath()))) {
+        try (InputStream stream = Files.newInputStream(Paths.get(folder.getAbsolutePath(), "config.properties"))) {
             properties.load(stream);
         } catch (final IOException ex) {
             ex.printStackTrace();

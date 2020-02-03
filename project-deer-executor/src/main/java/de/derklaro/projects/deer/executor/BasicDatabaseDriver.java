@@ -36,15 +36,39 @@ public class BasicDatabaseDriver implements DatabaseDriver {
     }
 
     @Override
+    public void clearDatabase(@NotNull File database) {
+        if (!database.exists() || !database.isDirectory()) {
+            return;
+        }
+
+        this.clear(database, true);
+    }
+
+    @Override
     public void deleteDatabase(@NotNull File database) {
         if (!database.exists() || !database.isDirectory()) {
             return;
         }
 
+        this.clear(database, false);
+        this.clearDatabase(database);
+
         try {
-            Files.walkFileTree(database.toPath(), new SimpleFileVisitor<Path>() {
+            Files.delete(database.toPath());
+        } catch (final IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void clear(File file, boolean ignoreConfig) {
+        try {
+            Files.walkFileTree(file.toPath(), new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+                    if (file.toFile().getName().equals("config.properties") && ignoreConfig) {
+                        return FileVisitResult.CONTINUE;
+                    }
+
                     try {
                         Files.deleteIfExists(file);
                     } catch (final IOException ex) {

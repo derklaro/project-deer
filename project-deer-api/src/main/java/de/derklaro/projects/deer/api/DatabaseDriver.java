@@ -22,5 +22,7 @@ public interface DatabaseDriver {
             @NotNull Function<File, T> applier
     );
 
+    void clearDatabase(@NotNull File database);
+
     void deleteDatabase(@NotNull File database);
 }
