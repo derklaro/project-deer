@@ -1,0 +1,7 @@
+os: linux
+language: java
+jdk:
+  - openjdk8
+
+script:
+  - mvn clean package
