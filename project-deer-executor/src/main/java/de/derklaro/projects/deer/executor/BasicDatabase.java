@@ -86,7 +86,7 @@ public class BasicDatabase<T extends FileWriter> implements Database<T> {
     public void insert(@NotNull String key, @NotNull String[] values, @NotNull T value) {
         String databaseFileName = key + "-" + String.join("-", values);
         File databaseFile = new File(getTargetFolder().getPath(), databaseFileName);
-        if (file.exists()) {
+        if (databaseFile.exists()) {
             return;
         }
 
@@ -98,7 +98,7 @@ public class BasicDatabase<T extends FileWriter> implements Database<T> {
             ex.printStackTrace();
         }
 
-        try (java.io.FileWriter fileWriter = new java.io.FileWriter(file, false)) {
+        try (java.io.FileWriter fileWriter = new java.io.FileWriter(databaseFile, false)) {
             fileWriter.write(value.toWriteableString());
         } catch (final IOException ex) {
             ex.printStackTrace();
